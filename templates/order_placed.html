@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Register
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success m-1" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    {% endif %}
+    <div id="errors"></div>
+{% endblock %}

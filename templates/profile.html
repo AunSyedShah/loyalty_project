@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Profile
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success m-1" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div id="errors"></div>
+    <div class="card my-1" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ request.user.first_name }}'s Profile</h5>
+            <p class="card-text">{{ request.user.email }}</p>
+            <p class="card-text">Loyalty Points: {{ user_cart.loyalty_points }}</p>
+            <!-- address form -->
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" value="{{ user_cart.address }}" name="address">
+                </div>
+                <button type="submit" class="btn btn-primary" name="address_btn">Update Address</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

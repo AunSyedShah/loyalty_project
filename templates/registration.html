@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Register
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger m-1" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    {% endif %}
+    <div id="errors"></div>
+    <form method="post" id="registration_form">
+        {% csrf_token %}
+        {{ registration_form|crispy }}
+        <button type="submit" class="btn btn-primary" onclick="validate_form()">Register</button>
+    </form>
+    <script>
+        function validate_form() {
+            const first_name = document.getElementById('id_first_name').value;
+            const last_name = document.getElementById('id_last_name').value;
+            const email = document.getElementById('id_email').value;
+            const errors_array = [];
+            // if first name is blank or null
+            if (!first_name) {
+                errors_array.push('First name is required');
+            }
+            // if last name is blank or null
+            if (!last_name) {
+                errors_array.push('Last name is required');
+            }
+            // if email is blank or null
+            if (!email) {
+                errors_array.push('Email is required');
+            }
+            // if errors array is not empty
+            if (errors_array.length > 0) {
+                // display errors
+                const errors = document.getElementById('errors');
+                errors.innerHTML = '';
+                errors_array.forEach(error => {
+                    errors.innerHTML += `<li>${error}</li>`;
+                });
+                return false;
+            }
+            document.getElementById('registration_form').submit();
+        }
+    </script>
+{% endblock %}

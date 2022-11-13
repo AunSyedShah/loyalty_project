@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}
+    Home
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div id="added_card_notification_div"></div>
+    <!-- if user is not authenticated display message that Please login to place an order -->
+    {% if not user.is_authenticated %}
+        <div class="alert alert-warning my-1" role="alert">
+            Please login to place an order
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-2">
+            <form method="post">
+                {% csrf_token %}
+                <select class="form-select" aria-label="Default select example" name="selected_category">
+                    <option selected>Open this select menu</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <!-- bootstrap submit button -->
+                <button type="submit" class="btn btn-primary my-1" name="category_button">Select Category</button>
+            </form>
+        </div>
+        <div class="col">
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-sm-4">
+                        <div class="card m-1">
+                            <img class="card-img-top" src="{{ product.product_image.url }}" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product }}</h5>
+                                <p class="card-text">Rs. {{ product.product_price }}</p>
+                                <p class="card-text">Loyalty Points: {{ product.loyalty_points }}</p>
+                                {% if request.user.is_authenticated %}
+                                    <button class="btn btn-primary"
+                                            onclick="addToCart({{ product.id }}, '{{ product.product_name }}')">Add to
+                                        Cart
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function addToCart(product_id, product_name) {
+            axios.post('/add_to_cart/', {
+                product_id: product_id,
+                product_name: product_name,
+            })
+                .then(function (response) {
+                    console.log(response);
+                    if (response.status === 200) {
+                        document.getElementById('added_card_notification_div').innerHTML = `
+                            <div class="alert alert-success my-1" role="alert">
+                                ${product_name} added to cart
+                            </div>
+                        `
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error.data);
+                });
+        }
+    </script>
+{% endblock %}

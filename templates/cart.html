@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}
+    Cart
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger m-1" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if cart_items %}
+        <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product_name }}</td>
+                <td>{{ item.product_price }}</td>
+                <td>1</td>
+                <td>{{ item.product_price }}</td>
+            </tr>
+        {% endfor %}
+        <!-- grand total -->
+        <tr>
+            <td colspan="3" class="text-right"><b>Grand Total</b></td>
+            <td><b>{{ grand_total }}</b></td>
+        </tr>
+        <!-- total loyalty points -->
+        <tr>
+            <td colspan="3" class="text-right"><b>You will get</b></td>
+            <td><b>{{ loyalty_points }} LP</b></td>
+        </tr>
+        <!-- previous loyalty points -->
+        <tr>
+            <td colspan="3" class="text-right"><b>Previous Loyalty Points</b></td>
+            <td><b>{{ pre_loyalty_points }}</b></td>
+        </tr>
+        <!-- discount -->
+        <tr>
+            <td colspan="3" class="text-right"><b>10%Discount</b></td>
+            <td><b>{{ discount }}</b></td>
+        </tr>
+        <!-- place order button -->
+        <tr>
+            <td colspan="4">
+                {#                                <form action="{% url 'checkout' %}" method="POST">#}
+                {#                                    {% csrf_token %}#}
+                {#                                    <button type="submit" class="btn btn-success">Place Order</button>#}
+                {#                                </form>#}
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Order Now
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Select Payment Method</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Choose a payment method</option>
+                                    <option value="1">Debit Card/ Credit Card</option>
+                                    <option value="2">Cash on Delivery</option>
+                                    <option value="3">Crypto</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <form method="post" action="{% url 'checkout' %}">
+                                    <button type="submit" class="btn btn-primary">Complete Order</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    {% else %}
+        <h3 class="text-center">Your cart is empty</h3>
+    {% endif %}
+
+{% endblock %}
