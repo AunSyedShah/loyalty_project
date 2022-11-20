@@ -8,6 +8,8 @@ from .forms import RegistrationForm
 import json
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
 
 
 # Create your views here.
@@ -136,3 +138,48 @@ def profile(request):
 def send_email(request):
     send_mail("testing", "testing", settings.EMAIL_HOST_USER, ['aunsyedshah.drama@gmail.com'])
     return JsonResponse({'success': True}, status=200)
+
+
+@login_required(login_url="/users/login")
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)
+    messages.success(request, 'Product added to cart successfully')
+    return redirect("home")
+
+
+@login_required(login_url="/users/login")
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.remove(product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/users/login")
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/users/login")
+def item_decrement(request, id):
+    cart = Cart(request)
+    product = Product.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/users/login")
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    return redirect("cart_detail")
+
+
+@login_required(login_url="/users/login")
+def cart_detail(request):
+    return render(request, 'cart/cart_detail.html')

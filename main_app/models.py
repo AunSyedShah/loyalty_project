@@ -11,14 +11,14 @@ class Category(models.Model):
 
 # Create your models here.
 class Product(models.Model):
-    product_name = models.CharField(max_length=100, default='')
-    product_price = models.FloatField(default=0)
+    name = models.CharField(max_length=255, default='')
+    price = models.FloatField(default=0)
     loyalty_points = models.IntegerField(default=0)
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    product_image = models.ImageField(upload_to='product_images', default='')
+    image = models.ImageField(upload_to='products/', default='')
 
     def __str__(self):
-        return self.product_name
+        return self.name
 
 
 class UserCart(models.Model):

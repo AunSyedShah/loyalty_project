@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load cart_tag %}
+{% block content %}
+    <!-- total items in alert -->
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong>Dear {{ request.user.get_full_name }}</strong> You have
+        <strong>{{ request.session.cart|length }}</strong> items in your
+        cart.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for key,value in request.session.cart.items %}
+            <tr>
+            <td>{{ value.name }}</td>
+            <td>{{ value.price }}</td>
+            <td>x{{ value.quantity }}</td>
+            <td>{{ value.price|multiply:value.quantity }}</td>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

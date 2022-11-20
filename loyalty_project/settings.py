@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'main_app',
     "crispy_forms",
     "crispy_bootstrap5",
+    'cart'
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processor.cart_total_amount'
             ],
         },
     },
@@ -129,3 +131,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "aunsyedsyed@gmail.com"
 EMAIL_HOST_PASSWORD = 'yqivixuzaiwhqsjb'
+CART_SESSION_ID = 'cart'
