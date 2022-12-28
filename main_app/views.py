@@ -170,7 +170,7 @@ def item_decrement(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.decrement(product=product)
-    return redirect("cart_detail")
+    return redirect("main_app:cart_detail")
 
 
 @login_required(login_url="/users/login")

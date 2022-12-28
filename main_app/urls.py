@@ -15,7 +15,7 @@ urlpatterns = [
     path('order_placed/', views.order_placed, name='order_placed'),
     path('send_email/', views.send_email, name='send_email'),
     path('cart/add/<int:id>/', views.cart_add, name='cart_add'),
-    path('cart/item_cl ear/<int:id>/', views.item_clear, name='item_clear'),
+    path('cart/item_clear/<int:id>/', views.item_clear, name='item_clear'),
     path('cart/item_increment/<int:id>/',
          views.item_increment, name='item_increment'),
     path('cart/item_decrement/<int:id>/',
