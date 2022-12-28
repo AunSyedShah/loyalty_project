@@ -25,12 +25,12 @@
                     {% if request.user.is_authenticated %}
                         <!-- profile -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'cart' %}" id="cart_element">Cart</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                            <a class="nav-link" href="{% url 'main_app:profile' %}">Profile</a>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'main_app:cart_detail' %}" id="cart_element">Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'main_app:logout' %}">Logout</a></li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'main_app:login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'main_app:signup' %}">Register</a></li>
                     {% endif %}
                 </ul>
             </div>

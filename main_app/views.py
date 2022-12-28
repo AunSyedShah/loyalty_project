@@ -37,7 +37,7 @@ def user_login(request):
             # initialize user cart
             if not UserCart.objects.filter(user=user).exists():
                 UserCart.objects.create(user=user)
-            return redirect('home')
+            return redirect('main_app:home')
         else:
             messages.error(request, 'Invalid Credentials')
             return redirect(request.path)
@@ -47,7 +47,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return redirect('home')
+    return redirect('main_app:home')
 
 
 def cart(request):
@@ -146,7 +146,7 @@ def cart_add(request, id):
     product = Product.objects.get(id=id)
     cart.add(product=product)
     messages.success(request, 'Product added to cart successfully')
-    return redirect("home")
+    return redirect("main_app:home")
 
 
 @login_required(login_url="/users/login")
@@ -162,7 +162,7 @@ def item_increment(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.add(product=product)
-    return redirect("cart_detail")
+    return redirect("main_app:cart_detail")
 
 
 @login_required(login_url="/users/login")
