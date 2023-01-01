@@ -6,33 +6,38 @@
         <strong>Dear {{ request.user.get_full_name }}</strong> You have
         <strong>{{ request.session.cart|length }}</strong> items in your
         cart.
+        Click <a href="{% url 'main_app:cart_clear' %}" class="p-1 rounded">here</a> to clear cart.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Increment/Decrement Count</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for key,value in request.session.cart.items %}
-            <tr>
-            <td>{{ value.name }}</td>
-            <td>{{ value.price }}</td>
-            <td class="item_quantity">x{{ value.quantity }}</td>
-            <!-- anchor tag to increment count with bootstrap -->
-            <td><a href="{% url 'main_app:item_increment' value.product_id %}" class="btn btn-success">+</a><a
-                    href="{% url 'main_app:item_decrement' value.product_id %}" class="btn btn-warning mx-1"
-                    id="decrement_button">-</a></td>
-        {% endfor %}
-        </tbody>
-    </table>
-    <script>
-        if (document.getElementsByClassName('item_quantity').innerHTML === 'x1') {
-            document.getElementById('decrement_button').style.display = 'none';
-        }
-    </script>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key,value in request.session.cart.items %}
+                    <tr>
+                    <td>{{ value.name }}</td>
+                    <td>{{ value.price }}</td>
+                    <td>x{{ value.quantity }}</td>
+                    <!-- multiple price by quantity -->
+                    <td>{{ value.price|multiply:value.quantity }}</td>
+                    <!-- anchor tag to increment count with bootstrap -->
+                    <td><a href="{% url 'main_app:item_increment' value.product_id %}" class="btn btn-success">+</a><a
+                            href="{% url 'main_app:item_decrement' value.product_id %}" class="btn btn-warning mx-1"
+                            id="decrement_button">-</a>
+                        <a href="{% url 'main_app:item_clear' value.product_id %}" class="btn btn-danger">Delete</a>
+                    </td>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 {% endblock %}

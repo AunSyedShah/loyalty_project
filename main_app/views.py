@@ -154,7 +154,7 @@ def item_clear(request, id):
     cart = Cart(request)
     product = Product.objects.get(id=id)
     cart.remove(product)
-    return redirect("cart_detail")
+    return redirect("main_app:cart_detail")
 
 
 @login_required(login_url="/users/login")
@@ -177,7 +177,7 @@ def item_decrement(request, id):
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
-    return redirect("cart_detail")
+    return redirect("main_app:cart_detail")
 
 
 @login_required(login_url="/users/login")

@@ -12,7 +12,7 @@ class Category(models.Model):
 # Create your models here.
 class Product(models.Model):
     name = models.CharField(max_length=255, default='')
-    price = models.FloatField(default=0)
+    price = models.IntegerField(default=0)
     loyalty_points = models.IntegerField(default=0)
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/', default='')
