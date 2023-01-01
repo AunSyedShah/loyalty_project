@@ -17,6 +17,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Loyalty Points</th>
                     <th scope="col">Total</th>
                 </tr>
                 </thead>
@@ -26,6 +27,7 @@
                     <td>{{ value.name }}</td>
                     <td>{{ value.price }}</td>
                     <td>x{{ value.quantity }}</td>
+                    <td>{{ value.loyalty_points }}</td>
                     <!-- multiple price by quantity -->
                     <td>{{ value.price|multiply:value.quantity }}</td>
                     <!-- anchor tag to increment count with bootstrap -->
