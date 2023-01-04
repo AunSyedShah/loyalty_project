@@ -182,4 +182,6 @@ def cart_clear(request):
 
 @login_required(login_url="/users/login")
 def cart_detail(request):
+    context = {}
+    print(request.session["cart_total"])
     return render(request, 'cart/cart_detail.html')
