@@ -182,6 +182,10 @@ def cart_clear(request):
 
 @login_required(login_url="/users/login")
 def cart_detail(request):
-    context = {}
-    print(request.session["cart_total"])
+    # if cart_total does not exist in session
+    if 'cart_total' not in request.session:
+        request.session['cart_total'] = 0
+    # if total_loyalty_points does not exist in session
+    if 'total_loyalty_points' not in request.session:
+        request.session['total_loyalty_points'] = 0
     return render(request, 'cart/cart_detail.html')
