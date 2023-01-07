@@ -2,7 +2,7 @@
 {% load cart_tag %}
 {% block content %}
     <!-- total items in alert -->
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <div class="alert alert-info alert-dismissible fade show my-1" role="alert">
         <strong>Dear {{ request.user.get_full_name }}</strong> You have
         <strong>{{ request.session.cart|length }}</strong> items in your
         cart.
@@ -11,44 +11,58 @@
     </div>
     <div class="row">
         <div class="col">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Loyalty Points</th>
-                    <th scope="col">Total</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for key,value in request.session.cart.items %}
+            <form action="{% url 'main_app:checkout' %}" method="post">
+                {% csrf_token %}
+                <table class="table">
+                    <thead>
                     <tr>
-                    <td>{{ value.name }}</td>
-                    <td>{{ value.price }}</td>
-                    <td>x{{ value.quantity }}</td>
-                    <td>{{ value.loyalty_points }}</td>
-                    <!-- multiple price by quantity -->
-                    <td>{{ value.price|multiply:value.quantity }}</td>
-                    <!-- anchor tag to increment count with bootstrap -->
-                    <td><a href="{% url 'main_app:item_increment' value.product_id %}" class="btn btn-success">+</a><a
-                            href="{% url 'main_app:item_decrement' value.product_id %}" class="btn btn-warning mx-1"
-                            id="decrement_button">-</a>
-                        <a href="{% url 'main_app:item_clear' value.product_id %}" class="btn btn-danger">Delete</a>
-                    </td>
-                {% endfor %}
-                <!-- cart total -->
-                <tr>
-                    <td colspan="4" class="text-right">Cart Total</td>
-                    <td>{{ request.session.cart_total }}</td>
-                </tr>
-                <!-- total_loyalty_points -->
-                <tr>
-                    <td colspan="4" class="text-right">Total Loyalty Points</td>
-                    <td>{{ request.session.total_loyalty_points }}</td>
-                </tr>
-                </tbody>
-            </table>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Loyalty Points</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key,value in request.session.cart.items %}
+                        <tr>
+                        <td>{{ value.name }}</td>
+                        <td>{{ value.price }}</td>
+                        <td>x{{ value.quantity }}</td>
+                        <td>{{ value.loyalty_points }}</td>
+                        <!-- multiple price by quantity -->
+                        <td>{{ value.price|multiply:value.quantity }}</td>
+                        <!-- anchor tag to increment count with bootstrap -->
+                        <td><a href="{% url 'main_app:item_increment' value.product_id %}" class="btn btn-success">+</a><a
+                                href="{% url 'main_app:item_decrement' value.product_id %}" class="btn btn-warning mx-1"
+                                id="decrement_button">-</a>
+                            <a href="{% url 'main_app:item_clear' value.product_id %}" class="btn btn-danger">Delete</a>
+                        </td>
+                    {% endfor %}
+                    <!-- cart total -->
+                    <tr>
+                        <td colspan="4" class="text-right">Cart Total</td>
+                        <td>{{ request.session.cart_total }}</td>
+                    </tr>
+                    <!-- total_loyalty_points -->
+                    <tr>
+                        <td colspan="4" class="text-right">Loyalty Points from this Cart</td>
+                        <td>{{ request.session.total_loyalty_points }}</td>
+                    </tr>
+                    <!-- previous loyalty points -->
+                    <tr>
+                        <td colspan="4" class="text-right">Previous Loyalty Points</td>
+                        <td>{{ pre_loyalty_points }}</td>
+                    </tr>
+                    <!-- checkout button -->
+                    <tr>
+                        <td colspan="5" class="text-right">
+                            <button type="submit" class="btn btn-primary">Checkout</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
         </div>
     </div>
 

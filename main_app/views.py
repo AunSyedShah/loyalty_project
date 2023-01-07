@@ -103,17 +103,21 @@ def signup(request):
 def order_placed(request):
     if request.method == 'POST':
         user_cart = UserCart.objects.get(user=request.user)
-        products = user_cart.products.all()
-        user_cart.loyalty_points = 0
-        # add loyalty points to user_cart
-        total_loyalty_points = 0
-        for item in products:
-            total_loyalty_points += item.loyalty_points
+        # total_loyalty_points in session
+        total_loyalty_points = request.session['total_loyalty_points']
         user_cart.loyalty_points += total_loyalty_points
-        user_cart.products.clear()
         user_cart.save()
+        # products = user_cart.products.all()
+        # user_cart.loyalty_points = 0
+        # # add loyalty points to user_cart
+        # total_loyalty_points = 0
+        # for item in products:
+        #     total_loyalty_points += item.loyalty_points
+        # user_cart.loyalty_points += total_loyalty_points
+        # user_cart.products.clear()
+        # user_cart.save()
         messages.success(request, 'Order placed successfully')
-        return redirect('order_placed')
+        return redirect('main_app:order_placed')
     return render(request, 'order_placed.html')
 
 
@@ -182,10 +186,15 @@ def cart_clear(request):
 
 @login_required(login_url="/users/login")
 def cart_detail(request):
+    context = {}
     # if cart_total does not exist in session
     if 'cart_total' not in request.session:
         request.session['cart_total'] = 0
     # if total_loyalty_points does not exist in session
     if 'total_loyalty_points' not in request.session:
         request.session['total_loyalty_points'] = 0
-    return render(request, 'cart/cart_detail.html')
+    # previous loyalty points
+    user_cart = UserCart.objects.get(user=request.user)
+    previous_loyalty_points = user_cart.loyalty_points
+    context['pre_loyalty_points'] = previous_loyalty_points
+    return render(request, 'cart/cart_detail.html', context)
