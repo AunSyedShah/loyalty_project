@@ -54,12 +54,15 @@
                         <td colspan="4" class="text-right">Previous Loyalty Points</td>
                         <td>{{ pre_loyalty_points }}</td>
                     </tr>
-                    <!-- checkout button -->
-                    <tr>
-                        <td colspan="5" class="text-right">
-                            <button type="submit" class="btn btn-primary">Checkout</button>
-                        </td>
-                    </tr>
+                    <!-- if no items in cart -->
+                    {% if request.session.cart|length > 0 %}
+                        <!-- checkout button -->
+                        <tr>
+                            <td colspan="5" class="text-right">
+                                <button type="submit" class="btn btn-primary">Checkout</button>
+                            </td>
+                        </tr>
+                    {% endif %}
                     </tbody>
                 </table>
             </form>

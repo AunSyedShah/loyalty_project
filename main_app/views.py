@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
+from django.utils import timezone
 
 
 # Create your views here.
@@ -105,7 +106,11 @@ def order_placed(request):
         user_cart = UserCart.objects.get(user=request.user)
         # total_loyalty_points in session
         total_loyalty_points = request.session['total_loyalty_points']
+        user_cart.loyalty_points = 0
         user_cart.loyalty_points += total_loyalty_points
+        # increment loyalty points date to five days from now
+        user_cart.loyalty_points_expiry_date = timezone.now() + timezone.timedelta(days=5)
+        # subtract previous loyalty points
         user_cart.save()
         # products = user_cart.products.all()
         # user_cart.loyalty_points = 0

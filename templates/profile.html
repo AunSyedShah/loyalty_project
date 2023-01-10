@@ -17,6 +17,7 @@
             <h5 class="card-title">{{ request.user.first_name }}'s Profile</h5>
             <p class="card-text">{{ request.user.email }}</p>
             <p class="card-text">Loyalty Points: {{ user_cart.loyalty_points }}</p>
+            <p class="card-text">Loyalty Expiry Date: {{ user_cart.loyalty_points_expiry_date }}</p>
             <!-- address form -->
             <form method="post">
                 {% csrf_token %}

@@ -25,4 +25,5 @@ class UserCart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.CharField(max_length=100, default='')
     loyalty_points = models.IntegerField(default=0)
+    loyalty_points_expiry_date = models.DateField(null=True, blank=True)
     products = models.ManyToManyField(Product, blank=True)
