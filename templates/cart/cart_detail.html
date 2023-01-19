@@ -54,6 +54,11 @@
                         <td colspan="4" class="text-right">Previous Loyalty Points</td>
                         <td>{{ pre_loyalty_points }}</td>
                     </tr>
+                    <!-- discount -->
+                    <tr>
+                        <td colspan="4" class="text-right">Discount</td>
+                        <td>{{ discount }}</td>
+                    </tr>
                     <!-- if no items in cart -->
                     {% if request.session.cart|length > 0 %}
                         <!-- checkout button -->

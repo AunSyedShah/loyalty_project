@@ -201,5 +201,10 @@ def cart_detail(request):
     # previous loyalty points
     user_cart = UserCart.objects.get(user=request.user)
     previous_loyalty_points = user_cart.loyalty_points
+    # if previous_loyalty_points are greater than 5000 give 10% discount
+    if previous_loyalty_points > 5000:
+        cart_total = request.session['cart_total']
+        discount = (cart_total / 100) * 10
+        context['discount'] = discount
     context['pre_loyalty_points'] = previous_loyalty_points
     return render(request, 'cart/cart_detail.html', context)
