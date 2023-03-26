@@ -106,7 +106,7 @@ def signup(request):
 def order_placed(request):
     if request.method == 'POST':
         user_cart = UserCart.objects.get(user=request.user)
-        if 'avail_loyalty' in request.POST:
+        if not 'avail_loyalty' in request.POST:
             # total_loyalty_points in session
             total_loyalty_points = request.session['total_loyalty_points']
             user_cart.loyalty_points = 0
