@@ -20,9 +20,23 @@ def home(request):
     if request.method == "POST":
         if "category_button" in request.POST:
             selected_category = request.POST.get('selected_category')
+            # if selected category is not a number then display error message
+            try:
+                selected_category = int(selected_category)
+            except ValueError:
+                messages.error(request, 'Please Select Category')
+                return redirect('main_app:home')
             products = Product.objects.filter(product_category=selected_category)
             context['products'] = products
             context['categories'] = Category.objects.all()
+            context['sub_categories'] = SubCategory.objects.all()
+            return render(request, 'home.html', context)
+        if 'selected_sub_category' in request.POST:
+            selected_sub_category = request.POST.get('selected_sub_category')
+            products = Product.objects.filter(sub_category=selected_sub_category)
+            context['products'] = products
+            context['categories'] = Category.objects.all()
+            context['sub_categories'] = SubCategory.objects.all()
             return render(request, 'home.html', context)
     context['products'] = Product.objects.all()
     context['categories'] = Category.objects.all()

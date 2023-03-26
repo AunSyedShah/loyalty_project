@@ -23,13 +23,11 @@
             <form method="post">
                 {% csrf_token %}
                 <select class="form-select" aria-label="Default select example" name="selected_category">
-                    <option selected>Select Category</option>
                     {% for category in categories %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
                 </select>
-                <select class="form-select my-2" aria-label="Default select example" name="selected_sub__category">
-                    <option selected>Select Sub Category</option>
+                <select class="form-select my-2" aria-label="Default select example" name="selected_sub_category">
                     {% for category in sub_categories %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
