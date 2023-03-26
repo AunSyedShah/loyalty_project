@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, Category, UserCart
+from .models import Product, Category, UserCart, SubCategory
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.http import JsonResponse
@@ -11,6 +11,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -25,6 +26,7 @@ def home(request):
             return render(request, 'home.html', context)
     context['products'] = Product.objects.all()
     context['categories'] = Category.objects.all()
+    context['sub_categories'] = SubCategory.objects.all()
     return render(request, 'home.html', context)
 
 
@@ -104,24 +106,31 @@ def signup(request):
 def order_placed(request):
     if request.method == 'POST':
         user_cart = UserCart.objects.get(user=request.user)
-        # total_loyalty_points in session
-        total_loyalty_points = request.session['total_loyalty_points']
-        user_cart.loyalty_points = 0
-        user_cart.loyalty_points += total_loyalty_points
-        # increment loyalty points date to five days from now
-        user_cart.loyalty_points_expiry_date = timezone.now() + timezone.timedelta(days=5)
-        # subtract previous loyalty points
-        user_cart.save()
-        # products = user_cart.products.all()
-        # user_cart.loyalty_points = 0
-        # # add loyalty points to user_cart
-        # total_loyalty_points = 0
-        # for item in products:
-        #     total_loyalty_points += item.loyalty_points
-        # user_cart.loyalty_points += total_loyalty_points
-        # user_cart.products.clear()
-        # user_cart.save()
+        if 'avail_loyalty' in request.POST:
+            # total_loyalty_points in session
+            total_loyalty_points = request.session['total_loyalty_points']
+            user_cart.loyalty_points = 0
+            user_cart.loyalty_points += total_loyalty_points
+            # increment loyalty points date to five days from now
+            user_cart.loyalty_points_expiry_date = timezone.now() + timezone.timedelta(days=90)
+            # subtract previous loyalty points
+            user_cart.save()
+            # products = user_cart.products.all()
+            # user_cart.loyalty_points = 0
+            # # add loyalty points to user_cart
+            # total_loyalty_points = 0
+            # for item in products:
+            #     total_loyalty_points += item.loyalty_points
+            # user_cart.loyalty_points += total_loyalty_points
+            # user_cart.products.clear()
+            # user_cart.save()
+        else:
+            user_cart.loyalty_points = 0
+            user_cart.save()
         messages.success(request, 'Order placed successfully')
+        # clear cart
+        cart = Cart(request)
+        cart.clear()
         return redirect('main_app:order_placed')
     return render(request, 'order_placed.html')
 

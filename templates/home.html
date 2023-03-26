@@ -23,13 +23,19 @@
             <form method="post">
                 {% csrf_token %}
                 <select class="form-select" aria-label="Default select example" name="selected_category">
-                    <option selected>Open this select menu</option>
+                    <option selected>Select Category</option>
                     {% for category in categories %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
                     {% endfor %}
                 </select>
+                <select class="form-select my-2" aria-label="Default select example" name="selected_sub__category">
+                    <option selected>Select Sub Category</option>
+                    {% for category in sub_categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
                 <!-- bootstrap submit button -->
-                <button type="submit" class="btn btn-primary my-1" name="category_button">Select Category</button>
+                <button type="submit" class="btn btn-primary my-1" name="category_button">Show Products</button>
             </form>
         </div>
         <div class="col">
@@ -43,7 +49,10 @@
                                 <p class="card-text">Rs. {{ product.price }}</p>
                                 <p class="card-text">Loyalty Points: {{ product.loyalty_points }}</p>
                                 {% if request.user.is_authenticated %}
-                                    <a href="{% url 'main_app:cart_add' product.id %}" class="btn btn-primary">Add To Cart</a>
+                                    <a href="{% url 'main_app:cart_add' product.id %}" class="btn btn-primary">Add To
+                                        Cart</a>
+                                    <a href="{% url 'main_app:item_increment' product.id %}"
+                                       class="btn btn-success">+</a>
                                 {% endif %}
                             </div>
                         </div>

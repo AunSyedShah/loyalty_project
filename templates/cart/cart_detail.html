@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load cart_tag %}
+{% block title %}
+    Cart
+{% endblock %}
 {% block content %}
     <!-- total items in alert -->
     <div class="alert alert-info alert-dismissible fade show my-1" role="alert">
@@ -62,6 +65,17 @@
                     <!-- if no items in cart -->
                     {% if request.session.cart|length > 0 %}
                         <!-- checkout button -->
+                        <tr>
+                            <td colspan="5" class="text-right">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                           name="avail_loyalty">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Avail Loyalty Points
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
                         <tr>
                             <td colspan="5" class="text-right">
                                 <button type="submit" class="btn btn-primary">Checkout</button>

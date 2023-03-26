@@ -9,12 +9,21 @@ class Category(models.Model):
         return self.name
 
 
+class SubCategory(models.Model):
+    name = models.CharField(max_length=50)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default='', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 # Create your models here.
 class Product(models.Model):
     name = models.CharField(max_length=255, default='')
     price = models.IntegerField(default=0)
     loyalty_points = models.IntegerField(default=0)
-    product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    product_category = models.ForeignKey(Category, on_delete=models.CASCADE, default='', null=True, blank=True)
+    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, default='', null=True, blank=True)
     image = models.ImageField(upload_to='products/', default='')
 
     def __str__(self):
